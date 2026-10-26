@@ -1,7 +1,7 @@
 import Link from "next/link";
 import StatBar from "@/components/StatBar";
 import { getDisciplineStats, getStats } from "@/lib/data";
-import { DISCIPLINE_META } from "@/types/discipline";
+import { DISCIPLINE_META } from "@/types/disciplineStats";
 import { STAT_META } from "@/types/stats";
 
 export default function DisciplinePage() {

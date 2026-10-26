@@ -1,7 +1,7 @@
 export const STATS = [
   "discipline",
   "knowledge",
-  "strength",
+  "physical",
   "body",
   "happiness",
 ] as const;
@@ -32,8 +32,8 @@ export const STAT_META: Record<
     bar: "bg-sky-400",
     text: "text-sky-400",
   },
-  strength: {
-    label: "Strength",
+  physical: {
+    label: "Physical",
     description: "Workouts, lifts, PRs",
     bar: "bg-rose-400",
     text: "text-rose-400",

@@ -3,8 +3,9 @@
 export const DISCIPLINE_STATS = [
   "selfControl",
   "consistency",
-  "accountability",
+  "timeManagement",
   "cleanliness",
+  "screenTime",
 ] as const;
 
 export type DisciplineStatKey = (typeof DISCIPLINE_STATS)[number];
@@ -27,12 +28,16 @@ export const DISCIPLINE_META: Record<
     label: "Consistency",
     description: "Streaks, showing up every day",
   },
-  accountability: {
-    label: "Accountability",
-    description: "Owning results, following through on commitments",
+  timeManagement: {
+    label: "Time Management",
+    description: "Prioritizing tasks, using time effectively",
   },
   cleanliness: {
     label: "Cleanliness",
     description: "Keeping your space, body, and things in order",
+  },
+  screenTime: {
+    label: "Screen Time",
+    description: "Managing and limiting device usage",
   },
 };

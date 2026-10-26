@@ -5,6 +5,8 @@ import { STAT_META, type StatKey } from "@/types/stats";
 // Stats that have their own breakdown page
 const DETAIL_PAGES: Partial<Record<StatKey, string>> = {
   discipline: "/discipline",
+  knowledge: "/knowledge",
+  physical: "/physical",
 };
 
 export default function Home() {
