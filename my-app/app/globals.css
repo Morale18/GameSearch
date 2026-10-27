@@ -10,6 +10,15 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-pixel: var(--font-silkscreen);
+
+  /* RPG detail page palette */
+  --color-rpg-bg: #0f1211;
+  --color-rpg-card: #151a18;
+  --color-rpg-border: #27302d;
+  --color-rpg-track: #0b0e0d;
+  --color-rpg-teal: #5fb8a0;
+  --color-rpg-gold: #e8b84a;
 }
 
 body {
