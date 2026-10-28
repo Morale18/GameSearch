@@ -1,3 +1,5 @@
+import type { StatOverview, SubStatActivity } from "./stats";
+
 export const PHYSICAL_STATS = [
     "strength",
     "calesthenics",
@@ -41,22 +43,6 @@ export const PHYSICAL_META: Record<
 };
 
 // Extra info shown on the Physical detail page
-export type XpSource = {
-    label: string;
-    xp: number;
-};
+export type PhysicalStatDetail = PhysicalStat & SubStatActivity;
 
-export type PhysicalStatDetail = PhysicalStat & {
-    // XP gained in the last 7 days (already included in xp)
-    weeklyXp: number;
-    sources: XpSource[];
-    // Oldest → today
-    last7Days: boolean[];
-};
-
-export type PhysicalOverview = {
-    level: number;
-    // XP needed to reach the next level
-    nextLevelXp: number;
-    stats: PhysicalStatDetail[];
-};
+export type PhysicalOverview = StatOverview<PhysicalStatDetail>;

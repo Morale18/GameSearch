@@ -62,3 +62,26 @@ export const STAT_META: Record<
     shades: ["#D1A24A", "#AD863D", "#8A6A31", "#6A5126"],
   },
 };
+
+// One way a sub-stat earns XP, shown on the stat detail pages
+export type XpSource = {
+  label: string;
+  xp: number;
+};
+
+// Extra info shown for a sub-stat on its detail page
+export type SubStatActivity = {
+  // XP gained in the last 7 days (already included in xp)
+  weeklyXp: number;
+  sources: XpSource[];
+  // Oldest → today
+  last7Days: boolean[];
+};
+
+// Everything a stat detail page needs
+export type StatOverview<T> = {
+  level: number;
+  // XP needed to reach the next level
+  nextLevelXp: number;
+  stats: T[];
+};

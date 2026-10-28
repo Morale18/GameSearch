@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { xpPercent } from "@/lib/xp";
 
 type HeroStageProps = {
   level: number;
@@ -8,7 +9,7 @@ type HeroStageProps = {
 
 // Poster-style scene: sun, red horizon stripes and the pixel hero, with level and XP on top
 export default function HeroStage({ level, xp, maxXp }: HeroStageProps) {
-  const percent = maxXp ? Math.min(100, (xp / maxXp) * 100) : 0;
+  const percent = xpPercent(xp, maxXp);
 
   return (
     <section

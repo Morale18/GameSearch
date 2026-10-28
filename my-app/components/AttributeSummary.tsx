@@ -50,7 +50,7 @@ export default function AttributeSummary({ name, chip, segments, total, maxXp, t
           viewBox="0 0 236 236"
           className="-rotate-90"
         >
-          <circle cx="118" cy="118" r={RADIUS} fill="none" stroke="#3A3631" strokeWidth="16" />
+          <circle cx="118" cy="118" r={RADIUS} fill="none" className="stroke-ql-track" strokeWidth="16" />
           {arcs.map((arc, i) =>
             arc.dash > 0 ? (
               <circle

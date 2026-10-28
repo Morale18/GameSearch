@@ -1,3 +1,4 @@
+import type { StatOverview, SubStatActivity } from "./stats";
 
 export const KNOWLEDGE_STATS = [
     "reading",
@@ -48,4 +49,7 @@ export const KNOWLEDGE_META: Record<
     },
 };
 
+// Extra info shown on the Knowledge detail page
+export type KnowledgeStatDetail = KnowledgeStat & SubStatActivity;
 
+export type KnowledgeOverview = StatOverview<KnowledgeStatDetail>;

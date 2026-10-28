@@ -1,6 +1,13 @@
-import { STATS, type Stat } from "@/types/stats";
+import { sumXp } from "@/lib/xp";
+import { STATS, type Stat, type StatKey } from "@/types/stats";
 import { DISCIPLINE_STATS, type DisciplineStat } from "@/types/disciplineStats";
-import { KNOWLEDGE_STATS, type KnowledgeStat } from "@/types/knowledgeStats";
+import {
+  KNOWLEDGE_STATS,
+  type KnowledgeOverview,
+  type KnowledgeStat,
+  type KnowledgeStatKey,
+  type KnowledgeStatDetail,
+} from "@/types/knowledgeStats";
 import {
   PHYSICAL_STATS,
   type PhysicalOverview,
@@ -21,9 +28,86 @@ export function getDisciplineStats(): DisciplineStat[] {
   return DISCIPLINE_STATS.map((key) => ({ key, xp: 0, maxXp: 25 }));
 }
 
+// Static sample data for the Knowledge page until it's wired to the db
+const KNOWLEDGE_SAMPLE: Record<KnowledgeStatKey, Omit<KnowledgeStatDetail, "key">> = {
+  reading: {
+    xp: 110,
+    maxXp: 250,
+    weeklyXp: 25,
+    sources: [
+      { label: "Read 20 pages", xp: 10 },
+      { label: "Finished a book", xp: 50 },
+    ],
+    last7Days: [true, true, false, true, true, false, true],
+  },
+  programming: {
+    xp: 160,
+    maxXp: 250,
+    weeklyXp: 40,
+    sources: [
+      { label: "Coding session", xp: 15 },
+      { label: "Shipped a feature", xp: 30 },
+    ],
+    last7Days: [true, true, true, false, true, true, true],
+  },
+  academicLearning: {
+    xp: 90,
+    maxXp: 250,
+    weeklyXp: 20,
+    sources: [
+      { label: "Study session", xp: 10 },
+      { label: "Aced an exam", xp: 40 },
+    ],
+    last7Days: [false, true, true, false, true, false, false],
+  },
+  handOnSkills: {
+    xp: 40,
+    maxXp: 250,
+    weeklyXp: 5,
+    sources: [
+      { label: "Fixed something", xp: 15 },
+      { label: "Finished a project", xp: 40 },
+    ],
+    last7Days: [false, false, false, false, false, true, false],
+  },
+  bibleFluency: {
+    xp: 75,
+    maxXp: 250,
+    weeklyXp: 15,
+    sources: [
+      { label: "Read a chapter", xp: 5 },
+      { label: "Memorized a verse", xp: 15 },
+    ],
+    last7Days: [true, false, true, true, false, true, true],
+  },
+  generalKnowledge: {
+    xp: 55,
+    maxXp: 250,
+    weeklyXp: 10,
+    sources: [
+      { label: "Watched a documentary", xp: 10 },
+      { label: "Learned a new topic", xp: 20 },
+    ],
+    last7Days: [false, true, false, false, true, false, true],
+  },
+};
+
 export function getKnowledgeStats(): KnowledgeStat[] {
-  return KNOWLEDGE_STATS.map((key) => ({ key, xp: 0, maxXp: 25 }));
+  return KNOWLEDGE_STATS.map((key) => ({
+    key,
+    xp: KNOWLEDGE_SAMPLE[key].xp,
+    maxXp: KNOWLEDGE_SAMPLE[key].maxXp,
+  }));
 }
+
+export function getKnowledgeOverview(): KnowledgeOverview {
+  return {
+    level: 12,
+    nextLevelXp: 900,
+    stats: KNOWLEDGE_STATS.map((key) => ({ key, ...KNOWLEDGE_SAMPLE[key] })),
+  };
+}
+
 // Static sample data for the Physical page until it's wired to the db
 const PHYSICAL_SAMPLE: Record<PhysicalStatKey, Omit<PhysicalStatDetail, "key">> = {
   strength: {
@@ -100,32 +184,12 @@ export function getStats(): Stat[] {
   const knowledge = getKnowledgeStats();
   const physical = getPhysicalStats();
 
-  
+  // These stats are built from their sub-stats instead of stored on their own
+  const fromSubStats: Partial<Record<StatKey, { xp: number; maxXp: number }>> = {
+    discipline: sumXp(discipline),
+    knowledge: sumXp(knowledge),
+    physical: sumXp(physical),
+  };
 
-  return STATS.map((key) => {
-    // Discipline is built from its sub-stats instead of stored on its own
-    if (key === "discipline") {
-      return {
-        key,
-        xp: discipline.reduce((sum, s) => sum + s.xp, 0),
-        maxXp: discipline.reduce((sum, s) => sum + s.maxXp, 0),
-      };
-    }
-    // Knowledge is built from its sub-stats instead of stored on its own
-    if (key === "knowledge") {
-      return {
-        key,
-        xp: knowledge.reduce((sum, s) => sum + s.xp, 0),
-        maxXp: knowledge.reduce((sum, s) => sum + s.maxXp, 0),
-      };
-    }
-    if(key === "physical") {
-      return {
-        key,
-        xp: physical.reduce((sum, s) => sum + s.xp, 0),
-        maxXp: physical.reduce((sum, s) => sum + s.maxXp, 0),
-      };
-    }
-    return { key, xp: 0, maxXp: 100 };
-  });
+  return STATS.map((key) => ({ key, ...(fromSubStats[key] ?? { xp: 0, maxXp: 100 }) }));
 }

@@ -1,14 +1,9 @@
 import AttributeTile from "@/components/AttributeTile";
 import HeroStage from "@/components/HeroStage";
+import PageShell from "@/components/PageShell";
 import { getLevel, getStats } from "@/lib/data";
-import { STAT_META, type StatKey } from "@/types/stats";
-
-// Stats that have their own breakdown page
-const DETAIL_PAGES: Partial<Record<StatKey, string>> = {
-  discipline: "/discipline",
-  knowledge: "/knowledge",
-  physical: "/physical",
-};
+import { statPage } from "@/lib/routes";
+import { STAT_META } from "@/types/stats";
 
 export default function Home() {
   const level = getLevel();
@@ -17,7 +12,7 @@ export default function Home() {
   const totalMaxXp = stats.reduce((sum, s) => sum + s.maxXp, 0);
 
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 pb-6 pt-[18px]">
+    <PageShell gap="gap-4">
       <header className="flex flex-col gap-0.5">
         <p className="text-[13px] font-medium text-ql-muted">Dashboard</p>
         <h1 className="text-2xl font-bold tracking-tight">Welcome</h1>
@@ -40,12 +35,12 @@ export default function Home() {
                 xp={stat.xp}
                 maxXp={stat.maxXp}
                 barClass={meta.bar}
-                href={DETAIL_PAGES[stat.key]}
+                href={statPage(stat.key)}
               />
             );
           })}
         </div>
       </section>
-    </main>
+    </PageShell>
   );
 }

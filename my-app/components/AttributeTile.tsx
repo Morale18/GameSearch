@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { xpPercent } from "@/lib/xp";
 
 type AttributeTileProps = {
   label: string;
@@ -13,7 +14,7 @@ type AttributeTileProps = {
 };
 
 export default function AttributeTile({ label, icon, xp, maxXp, barClass, href }: AttributeTileProps) {
-  const percent = maxXp ? Math.min(100, (xp / maxXp) * 100) : 0;
+  const percent = xpPercent(xp, maxXp);
 
   const content = (
     <>

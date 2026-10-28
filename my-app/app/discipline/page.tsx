@@ -1,4 +1,6 @@
 import AttributeSummary from "@/components/AttributeSummary";
+import BreakdownHeading from "@/components/BreakdownHeading";
+import PageShell from "@/components/PageShell";
 import StatBar from "@/components/StatBar";
 import { getDisciplineStats, getStats } from "@/lib/data";
 import { DISCIPLINE_META } from "@/types/disciplineStats";
@@ -10,7 +12,7 @@ export default function DisciplinePage() {
   const subStats = getDisciplineStats();
 
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-col gap-3.5 px-4 pb-6 pt-[18px]">
+    <PageShell>
       <AttributeSummary
         name={meta.label}
         segments={subStats.map((stat, i) => ({
@@ -23,9 +25,7 @@ export default function DisciplinePage() {
       />
 
       <section aria-labelledby="breakdown-heading" className="flex flex-col gap-2">
-        <h2 id="breakdown-heading" className="px-1 text-lg font-bold">
-          Made up of
-        </h2>
+        <BreakdownHeading />
         {subStats.map((stat, i) => (
           <StatBar
             key={stat.key}
@@ -37,6 +37,6 @@ export default function DisciplinePage() {
           />
         ))}
       </section>
-    </main>
+    </PageShell>
   );
 }
