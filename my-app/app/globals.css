@@ -1,28 +1,58 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
-  --foreground: #f4f4f5;
+  --background: #1c1b19;
+  --foreground: #ede3d1;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-pixel: var(--font-silkscreen);
+  --font-sans: var(--font-rubik);
 
-  /* RPG detail page palette */
-  --color-rpg-bg: #0f1211;
-  --color-rpg-card: #151a18;
-  --color-rpg-border: #27302d;
-  --color-rpg-track: #0b0e0d;
-  --color-rpg-teal: #5fb8a0;
-  --color-rpg-gold: #e8b84a;
+  /* Flat retro palette */
+  --color-ql-bg: #1c1b19;
+  --color-ql-card: #262420;
+  --color-ql-raised: #2f2c27;
+  --color-ql-track: #3a3631;
+  --color-ql-line: #57514a;
+  --color-ql-text: #ede3d1;
+  --color-ql-muted: #a89f8e;
+  --color-ql-dim: #857d6f;
+  --color-ql-cream: #dcc9a9;
+  --color-ql-moss: #4e6851;
+  --color-ql-moss-dark: #3f5642;
+  --color-ql-moss-shadow: #2f4232;
+  --color-ql-red: #b83a2d;
+  --color-ql-gold: #d1a24a;
+
+  /* One color per main stat */
+  --color-stat-discipline: #dcc9a9;
+  --color-stat-knowledge: #7e9bb0;
+  --color-stat-physical: #c4483a;
+  --color-stat-body: #7f9c7f;
+  --color-stat-happiness: #d1a24a;
+
+  --animate-bob: bob 3.2s ease-in-out infinite;
+
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-rubik), system-ui, sans-serif;
+}
+
+:where(a, button):focus-visible {
+  outline: 2px solid var(--color-ql-cream);
+  outline-offset: 2px;
 }

@@ -1,4 +1,5 @@
-import StatBar from "@/components/StatBar";
+import AttributeTile from "@/components/AttributeTile";
+import HeroStage from "@/components/HeroStage";
 import { getLevel, getStats } from "@/lib/data";
 import { STAT_META, type StatKey } from "@/types/stats";
 
@@ -12,41 +13,33 @@ const DETAIL_PAGES: Partial<Record<StatKey, string>> = {
 export default function Home() {
   const level = getLevel();
   const stats = getStats();
+  const totalXp = stats.reduce((sum, s) => sum + s.xp, 0);
+  const totalMaxXp = stats.reduce((sum, s) => sum + s.maxXp, 0);
 
   return (
-    <main className="mx-auto w-full max-w-3xl px-6 py-12">
-      <header className="mb-10 flex items-center justify-between gap-4 border-b border-zinc-800 pb-6">
-        <div>
-          <p className="text-sm font-medium uppercase tracking-widest text-zinc-500">
-            Dashboard
-          </p>
-          <h1 className="text-4xl font-bold tracking-tight text-zinc-100">Welcome</h1>
-        </div>
-
-        <div className="flex flex-col items-center rounded-xl border border-zinc-700 bg-zinc-900 px-5 py-3">
-          <span className="text-xs font-medium uppercase tracking-widest text-zinc-500">
-            Level
-          </span>
-          <span className="font-mono text-3xl font-bold tabular-nums text-zinc-100">
-            {level}
-          </span>
-        </div>
+    <main className="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 pb-6 pt-[18px]">
+      <header className="flex flex-col gap-0.5">
+        <p className="text-[13px] font-medium text-ql-muted">Dashboard</p>
+        <h1 className="text-2xl font-bold tracking-tight">Welcome</h1>
       </header>
 
-      <section className="rounded-2xl border border-zinc-800 bg-zinc-900/60 px-6 py-2">
-        <h2 className="pt-5 text-lg font-semibold text-zinc-100">Stats</h2>
-        <div className="divide-y divide-zinc-800">
+      <HeroStage level={level} xp={totalXp} maxXp={totalMaxXp} />
+
+      <section aria-labelledby="attributes-heading" className="flex flex-col gap-2.5">
+        <h2 id="attributes-heading" className="text-lg font-bold">
+          Attributes
+        </h2>
+        <div className="grid grid-cols-5 gap-2">
           {stats.map((stat) => {
             const meta = STAT_META[stat.key];
             return (
-              <StatBar
+              <AttributeTile
                 key={stat.key}
                 label={meta.label}
-                description={meta.description}
+                icon={meta.icon}
                 xp={stat.xp}
                 maxXp={stat.maxXp}
                 barClass={meta.bar}
-                textClass={meta.text}
                 href={DETAIL_PAGES[stat.key]}
               />
             );

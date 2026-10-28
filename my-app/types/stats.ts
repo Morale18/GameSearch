@@ -16,38 +16,49 @@ export type Stat = {
 };
 
 // Display info for each stat. Colors are Tailwind classes so they get picked up at build time.
+// `shades` color the sub-stats on a detail page, lightest first.
 export const STAT_META: Record<
   StatKey,
-  { label: string; description: string; bar: string; text: string }
+  { label: string; description: string; icon: string; bar: string; chip: string; shades: string[] }
 > = {
   discipline: {
     label: "Discipline",
     description: "Consistency, habits, showing up",
-    bar: "bg-amber-400",
-    text: "text-amber-400",
+    icon: "/icons/discipline.svg",
+    bar: "bg-stat-discipline",
+    chip: "bg-stat-discipline text-ql-bg",
+    shades: ["#DCC9A9", "#B9A788", "#97876B", "#776A54", "#5E5443", "#4A4235"],
   },
   knowledge: {
     label: "Knowledge",
     description: "Grades, new things learned",
-    bar: "bg-sky-400",
-    text: "text-sky-400",
+    icon: "/icons/knowledge.svg",
+    bar: "bg-stat-knowledge",
+    chip: "bg-stat-knowledge text-ql-bg",
+    shades: ["#7E9BB0", "#668397", "#526B7C", "#425663", "#36464F", "#2B383F"],
   },
   physical: {
     label: "Physical",
     description: "Workouts, lifts, PRs",
-    bar: "bg-rose-400",
-    text: "text-rose-400",
+    icon: "/icons/physical.svg",
+    bar: "bg-stat-physical",
+    chip: "bg-stat-physical text-ql-bg",
+    shades: ["#C4483A", "#A13B30", "#7F3027", "#62261F", "#4B1D18"],
   },
   body: {
     label: "Body",
     description: "Cardio, mile times, health",
-    bar: "bg-emerald-400",
-    text: "text-emerald-400",
+    icon: "/icons/body.svg",
+    bar: "bg-stat-body",
+    chip: "bg-stat-body text-ql-bg",
+    shades: ["#7F9C7F", "#678567", "#4E6851", "#3F5642"],
   },
   happiness: {
     label: "Happiness",
     description: "Mood, rest, relationships",
-    bar: "bg-violet-400",
-    text: "text-violet-400",
+    icon: "/icons/happiness.svg",
+    bar: "bg-stat-happiness",
+    chip: "bg-stat-happiness text-ql-bg",
+    shades: ["#D1A24A", "#AD863D", "#8A6A31", "#6A5126"],
   },
 };

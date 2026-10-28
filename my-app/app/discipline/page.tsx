@@ -1,4 +1,4 @@
-import Link from "next/link";
+import AttributeSummary from "@/components/AttributeSummary";
 import StatBar from "@/components/StatBar";
 import { getDisciplineStats, getStats } from "@/lib/data";
 import { DISCIPLINE_META } from "@/types/disciplineStats";
@@ -10,48 +10,32 @@ export default function DisciplinePage() {
   const subStats = getDisciplineStats();
 
   return (
-    <main className="mx-auto w-full max-w-3xl px-6 py-12">
-      <Link
-        href="/"
-        className="mb-6 inline-block text-sm text-zinc-500 transition-colors hover:text-zinc-300"
-      >
-        ← Dashboard
-      </Link>
+    <main className="mx-auto flex w-full max-w-xl flex-col gap-3.5 px-4 pb-6 pt-[18px]">
+      <AttributeSummary
+        name={meta.label}
+        segments={subStats.map((stat, i) => ({
+          label: DISCIPLINE_META[stat.key].label,
+          xp: stat.xp,
+          color: meta.shades[i % meta.shades.length],
+        }))}
+        total={discipline.xp}
+        maxXp={discipline.maxXp}
+      />
 
-      <header className="mb-10 border-b border-zinc-800 pb-6">
-        <p className="text-sm font-medium uppercase tracking-widest text-zinc-500">Stat</p>
-        <h1 className={`text-4xl font-bold tracking-tight ${meta.text}`}>{meta.label}</h1>
-        <p className="mt-1 text-sm text-zinc-400">
-          Your discipline is the total of the four stats below.
-        </p>
-      </header>
-
-      <section className="mb-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 px-6 py-2">
-        <StatBar
-          label="Total"
-          description="Sum of all discipline stats"
-          xp={discipline.xp}
-          maxXp={discipline.maxXp}
-          barClass={meta.bar}
-          textClass={meta.text}
-        />
-      </section>
-
-      <section className="rounded-2xl border border-zinc-800 bg-zinc-900/60 px-6 py-2">
-        <h2 className="pt-5 text-lg font-semibold text-zinc-100">Breakdown</h2>
-        <div className="divide-y divide-zinc-800">
-          {subStats.map((stat) => (
-            <StatBar
-              key={stat.key}
-              label={DISCIPLINE_META[stat.key].label}
-              description={DISCIPLINE_META[stat.key].description}
-              xp={stat.xp}
-              maxXp={stat.maxXp}
-              barClass={meta.bar}
-              textClass="text-zinc-200"
-            />
-          ))}
-        </div>
+      <section aria-labelledby="breakdown-heading" className="flex flex-col gap-2">
+        <h2 id="breakdown-heading" className="px-1 text-lg font-bold">
+          Made up of
+        </h2>
+        {subStats.map((stat, i) => (
+          <StatBar
+            key={stat.key}
+            label={DISCIPLINE_META[stat.key].label}
+            description={DISCIPLINE_META[stat.key].description}
+            xp={stat.xp}
+            maxXp={stat.maxXp}
+            color={meta.shades[i % meta.shades.length]}
+          />
+        ))}
       </section>
     </main>
   );

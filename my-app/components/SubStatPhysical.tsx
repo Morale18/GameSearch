@@ -14,6 +14,8 @@ type SubStatPhysicalProps = {
   sources: XpSource[];
   // Oldest → today
   last7Days: boolean[];
+  // Hex color for this sub-stat (matches its arc in the ring)
+  color: string;
   defaultOpen?: boolean;
 };
 
@@ -26,94 +28,82 @@ export default function SubStatPhysical({
   percentOfTotal,
   sources,
   last7Days,
+  color,
   defaultOpen = false,
 }: SubStatPhysicalProps) {
   const [open, setOpen] = useState(defaultOpen);
 
-  // Bar shows older XP in teal and this week's gain in gold
+  // Bar shows older XP in the sub-stat color and this week's gain in cream
   const basePercent = Math.min(100, ((xp - weeklyXp) / maxXp) * 100);
   const weeklyPercent = Math.min(100 - basePercent, (weeklyXp / maxXp) * 100);
   const activeDays = last7Days.filter(Boolean).length;
 
   return (
-    <div
-      className={`rounded-2xl border bg-rpg-card transition-colors ${
-        open ? "border-rpg-teal/40" : "border-rpg-border hover:border-rpg-teal/30"
-      }`}
-    >
+    <div className={`rounded-[20px] transition-colors ${open ? "bg-ql-raised" : "bg-ql-card"}`}>
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="block w-full p-5 text-left"
+        className="flex min-h-16 w-full items-center gap-3 px-3.5 py-2.5 text-left"
       >
-        <div className="flex items-center gap-4">
-          {/* Icon placeholder until pixel art icons exist */}
-          <div className="flex size-14 shrink-0 items-center justify-center rounded-xl border-2 border-rpg-teal/60 bg-rpg-track font-pixel text-xl text-rpg-gold">
-            {label[0]}
-          </div>
-          <div className="min-w-0 flex-1">
-            <h3 className="text-lg font-bold text-zinc-100">{label}</h3>
-            <p className="truncate text-sm text-zinc-400">{description}</p>
-          </div>
-          <span
-            className={`text-zinc-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-            aria-hidden
-          >
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <path d="M3 5l4 4 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+        {/* Icon placeholder until pixel art icons exist */}
+        <span
+          className="box-border flex size-[42px] shrink-0 items-center justify-center rounded-[14px] border-b-4 bg-ql-bg text-base font-bold text-ql-cream"
+          style={{ borderColor: color }}
+          aria-hidden
+        >
+          {label[0]}
+        </span>
+        <span className="flex min-w-0 flex-1 flex-col gap-1.5">
+          <span className="flex items-center justify-between gap-2">
+            <span className="truncate text-[15px] font-semibold">{label}</span>
+            <span className="text-[15px] font-bold tabular-nums">{xp}</span>
           </span>
-        </div>
-
-        <div className="mt-4 flex items-center gap-4">
-          <div
-            className="flex h-2.5 flex-1 overflow-hidden rounded-sm bg-rpg-track"
+          <span
+            className="flex h-2 overflow-hidden rounded bg-ql-track"
             role="progressbar"
             aria-label={label}
             aria-valuenow={xp}
             aria-valuemin={0}
             aria-valuemax={maxXp}
           >
-            <div className="h-full bg-rpg-teal" style={{ width: `${basePercent}%` }} />
-            <div className="h-full bg-rpg-gold" style={{ width: `${weeklyPercent}%` }} />
-          </div>
-          <span className="w-16 text-right font-mono text-sm tabular-nums text-zinc-200">
-            {xp} XP
+            <span className="h-full" style={{ width: `${basePercent}%`, backgroundColor: color }} />
+            <span className="h-full bg-ql-cream" style={{ width: `${weeklyPercent}%` }} />
           </span>
-        </div>
-
-        <div className="mt-3 flex items-center justify-between text-sm">
-          <span className="font-semibold text-rpg-gold">+{weeklyXp} XP this week</span>
-          <span className="text-zinc-500">{percentOfTotal}% of total</span>
-        </div>
+        </span>
       </button>
 
       {open && (
-        <div className="mx-5 border-t border-rpg-border pb-5 pt-4">
-          <h4 className="mb-2 text-sm font-semibold text-zinc-300">Earns XP from</h4>
-          <ul className="space-y-1.5">
+        <div className="flex flex-col gap-2.5 pb-3.5 pl-[66px] pr-3.5">
+          <p className="text-[13px] text-ql-muted">
+            {description} ·{" "}
+            <span className="font-semibold text-ql-cream">
+              {weeklyXp ? `+${weeklyXp} this week` : "no XP yet this week"}
+            </span>{" "}
+            · {percentOfTotal}% of total
+          </p>
+
+          <ul className="flex flex-col gap-2.5">
             {sources.map((source) => (
-              <li key={source.label} className="flex items-center gap-3">
-                <span className="size-2 rounded-[1px] bg-rpg-teal" aria-hidden />
-                <span className="flex-1 text-zinc-200">{source.label}</span>
-                <span className="font-mono tabular-nums text-rpg-gold">+{source.xp}</span>
+              <li key={source.label} className="flex justify-between text-sm">
+                <span className="text-[#D8CDBA]">{source.label}</span>
+                <span className="font-bold tabular-nums text-ql-cream">+{source.xp}</span>
               </li>
             ))}
           </ul>
 
-          <div className="mb-2 mt-5 flex items-center justify-between text-sm">
-            <h4 className="font-semibold text-zinc-300">Last 7 days</h4>
-            <span className="text-zinc-500">{activeDays} of 7 active</span>
+          <div className="mt-1 flex items-center justify-between text-[13px]">
+            <h4 className="font-semibold text-ql-text">Last 7 days</h4>
+            <span className="text-ql-muted">{activeDays} of 7 active</span>
           </div>
           <div className="grid grid-cols-7 gap-1.5">
             {last7Days.map((active, i) => {
               const isToday = i === last7Days.length - 1;
-              const color = !active ? "bg-rpg-track" : isToday ? "bg-rpg-gold" : "bg-rpg-teal";
               return (
                 <div
                   key={i}
-                  className={`h-8 rounded-sm border border-rpg-border/60 ${color}`}
+                  className={`h-8 rounded-lg ${active ? "" : "bg-ql-track"}`}
+                  style={active ? { backgroundColor: isToday ? "#DCC9A9" : color } : undefined}
                   title={isToday ? "Today" : `${last7Days.length - 1 - i}d ago`}
                 />
               );
